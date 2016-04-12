@@ -17,7 +17,7 @@ class CodeQualityTool extends Application
     protected $output;
     protected $input;
     const PHP_FILES_IN_SRC = '/^.*(\.php)$/';
-	const BIN_DIR = "vendor/bin";
+	const BIN_DIR = "bin";
 	
     public function __construct()
     {

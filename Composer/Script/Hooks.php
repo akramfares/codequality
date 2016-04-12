@@ -7,8 +7,8 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class Hooks
 {
-    const GIT_HOOK_PRECOMMIT = 'pre-commit';
-	const GIT_HOOK_PREPUSH = "pre-push";
+    const GIT_HOOK_PRECOMMIT = 'pre-commit.quality';
+	const GIT_HOOK_PREPUSH = "pre-push.quality";
     const GIT_HOOK_PATH      = '/../../../../../.git/hooks/';
     const QUALITY_HOOK       = '/../../Resources/hooks/pre-commit.php';
 	
