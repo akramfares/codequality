@@ -33,28 +33,41 @@ class CodeQualityTool extends Application
         $this->input  = $input;
         $this->output = $output;
 
-        $this->writeln('<fg=white;options=bold;bg=red>###Prosodie Code Quality Tool: START###</fg=white;options=bold;bg=red>');
+        $this->writeln('<fg=white;options=bold;bg=red>### Code Quality Tool: START###</fg=white;options=bold;bg=red>');
 
         $files = $this->extractCommitedFiles();
 
         if (empty($files)) {
             $this->writeInfo('No files to check');
-            $output->writeln('<fg=white;options=bold;bg=red>###Prosodie Code Quality Tool: END###</fg=white;options=bold;bg=red>');
+            $output->writeln('<fg=white;options=bold;bg=red>### Code Quality Tool: END###</fg=white;options=bold;bg=red>');
 
             return;
         }
 
-        //$this->checkComposer($files);
-        $this->phpLint($files);
-        $this->jsonLint($files);
-        $this->codeStyleFixer($files);
-		$this->codeSnifferFixer($files);
-        $this->codeStylePsr($files);
-        $this->phPmd($files);
+        if($this->isFeatureBranch()) {
+            //$this->checkComposer($files);
+            $this->phpLint($files);
+            $this->jsonLint($files);
+            $this->codeStyleFixer($files);
+    		$this->codeSnifferFixer($files);
+            $this->codeStylePsr($files);
+            $this->phPmd($files);
+        }
 		$this->unitTests();
 
         $output->writeln('<info>Good job!</info>');
-        $output->writeln('<fg=white;options=bold;bg=red>###Prosodie Code Quality Tool: END###</fg=white;options=bold;bg=red>');
+        $output->writeln('<fg=white;options=bold;bg=red>### Code Quality Tool: END###</fg=white;options=bold;bg=red>');
+    }
+    
+    protected function isFeatureBranch()
+    {
+        $branch = exec("git rev-parse --abbrev-ref HEAD");
+        return $this->startsWith($branch, "f-") ? true : false;
+    }
+    
+    private function startsWith($haystack, $needle) {
+        // search backwards starting from haystack length characters from the end
+        return $needle === "" || strrpos($haystack, $needle, -strlen($haystack)) !== false;
     }
 
     protected function extractCommitedFiles()

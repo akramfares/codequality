@@ -27,10 +27,10 @@ class CodeQualityTool extends Application
     {
         $this->input  = $input;
         $this->output = $output;
-        $this->writeln('<fg=white;options=bold;bg=red>###Prosodie Code Quality Tool: START###</fg=white;options=bold;bg=red>');
+        $this->writeln('<fg=white;options=bold;bg=red>### Code Quality Tool: START###</fg=white;options=bold;bg=red>');
 		$this->unitTests();
         $output->writeln('<info>Good job!</info>');
-        $output->writeln('<fg=white;options=bold;bg=red>###Prosodie Code Quality Tool: END###</fg=white;options=bold;bg=red>');
+        $output->writeln('<fg=white;options=bold;bg=red>### Code Quality Tool: END###</fg=white;options=bold;bg=red>');
     }
    
 	
