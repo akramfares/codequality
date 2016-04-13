@@ -180,7 +180,7 @@ class CodeQualityTool extends Application
                 $this->writeError($process->getErrorOutput());
                 $this->writeInfo($process->getOutput());
 
-                throw new Exception(sprintf('There are PHPMD violations!'));
+                $this->output->writeln('<error>There are PHPMD violations!</error>');
             }
         }
     }
