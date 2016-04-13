@@ -7,14 +7,12 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class Hooks
 {
-    const GIT_HOOK_PRECOMMIT = 'pre-commit.quality';
-	const GIT_HOOK_PREPUSH = "pre-push.quality";
     const GIT_HOOK_PATH      = '/../../../../../.git/hooks/';
-    const QUALITY_HOOK       = '/../../Resources/hooks/pre-commit.php';
 	
 	public static $hooks = array(
-		self::GIT_HOOK_PRECOMMIT => '/../../Resources/hooks/pre-commit.php',
-		self::GIT_HOOK_PREPUSH => '/../../Resources/hooks/pre-push.php'
+	    'hook-chain' => '/../../Resources/scripts/hook-chain',
+	    'pre-commit.quality' => '/../../Resources/hooks/pre-commit.php',
+		'pre-push.quality' => '/../../Resources/hooks/pre-push.php'
 	);
 	
     public static function setHooks(Event $event)
@@ -31,9 +29,17 @@ class Hooks
         if (false == $fs->exists($hookdir)) {
             return;
         }
-
+        
         $event->getIO()->write('Installing the CodeQuality HOOKS');
-
+        
+        // Rename initial pre-commit script
+        exec("mv ".$hookdir."pre-commit ".$hookdir."pre-commit.init");
+        exec("mv ".$hookdir."pre-push ".$hookdir."pre-push.init");
+        
+        // Link hooks to the hook chain script
+        exec("ln -s ".$hookdir."hook-chain ".$hookdir."pre-commit");
+        exec("ln -s ".$hookdir."hook-chain ".$hookdir."pre-push");
+        
 		foreach (self::$hooks as $name => $path) {
 			$gitHookPath = sprintf('%s%s', $hookdir, $name);
 
